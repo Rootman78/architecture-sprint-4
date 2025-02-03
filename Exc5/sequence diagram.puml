@@ -1,0 +1,10 @@
+@startuml
+actor "Пользователь" as u
+participant "Фронт" as f
+participant "Бэк" as b
+
+u -> f
+f -> b
+b -->> f
+f -->> u
+@enduml
