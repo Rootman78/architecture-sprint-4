@@ -1,0 +1,23 @@
+@startuml
+actor "Оператор" as u
+participant "MES (Frontend)" as mes
+participant "Клиентский кеш (из браузера)" as cl_cache
+participant "Серверный кеш (из MES API)" as srv_cache
+database "MES BD" as db
+
+u -> mes++: Чтение списка заказов
+
+mes -> cl_cache++: Попытка получения заказов из клиентского кеш
+alt Информация есть в клиентском кеш
+cl_cache --> mes : Список заказов из клиентского кеш
+
+else Информации нет в клиентском кеш
+cl_cache -> srv_cache++ : Получение заказов из серверного кеш
+db -->> srv_cache:  Обновление данных (асинхронно)
+srv_cache --> mes : Список заказов из серверного кеш
+srv_cache --> cl_cache : Обновление клиентского кеш
+end
+
+mes --> u : Получение списка заказов
+
+@enduml

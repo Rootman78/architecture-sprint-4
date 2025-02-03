@@ -1,0 +1,13 @@
+@startuml
+actor "Оператор" as u
+participant "MES (Frontend)" as mes
+
+participant "Серверный кеш (из MES API)" as srv_cache
+database "MES BD" as db
+
+
+
+u -> mes++: Создание записи об изменении статуса заказа
+mes -> srv_cache++: Создание записи об изменении статуса заказа в серверном кеше
+srv_cache ->> db :  Обновление данных в базе(асинхронно)
+@enduml
